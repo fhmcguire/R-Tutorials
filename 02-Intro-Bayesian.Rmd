@@ -30,7 +30,7 @@ By the end of this module, you will be able to:
 *   Use R (especially the `brms` package) to fit Bayesian models and interpret posterior distributions.
 *   Apply Bayesian methods to analyze data, including setting informative or weakly informative priors, generating posterior predictions, and assessing model diagnostics using MCMC.
 
-Prior to starting, we will load the data we generated in the `SAE-Intro-R.Rmd` module (`data_for_training_modules.rds`) and the following R packages:
+Prior to starting, we will load the data we generated in the `01-Intro-R.Rmd` module (`data_for_training_modules.rds`) and the following R packages:
 
 *   `brms`: Bayesian regression modeling in Stan
 *   `dplyr`: Data management/processing tasks
@@ -108,8 +108,7 @@ The likelihood represents how probable the observed data is, given a model. In p
 
 
 ### Posterior
-The posterior is t
-he updated distribution for the parameters after combining the prior and the data. Each row is one draw from the posterior — a plausible value of the parameters given the data and the prior.
+The posterior is the updated distribution for the parameters after combining the prior and the data. Each row is one draw from the posterior — a plausible value of the parameters given the data and the prior.
 
 ### Bayes' Theorem
 
@@ -250,7 +249,7 @@ set.seed(28752)
 # Note: Education
 # Note: "1 +" explicitly adds the model intercept (this is automatically included)
 fit <- brm(health_score_revised ~ 1 + education, 
-           # use the simulated data we created in "SAE-Intro-R.Rmd"
+           # use the simulated data we created in "01-Intro-R.Rmd"
            data = dta, 
            # use the prior we specified above
            prior = prior_example, 

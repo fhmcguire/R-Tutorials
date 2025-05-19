@@ -1697,7 +1697,7 @@ informative or weakly informative priors, generating posterior
 predictions, and assessing model diagnostics using MCMC.</li>
 </ul>
 <p>Prior to starting, we will load the data we generated in the
-<code>SAE-Intro-R.Rmd</code> module
+<code>01-Intro-R.Rmd</code> module
 (<code>data_for_training_modules.rds</code>) and the following R
 packages:</p>
 <ul>
@@ -1778,7 +1778,7 @@ family (e.g., Normal (Gaussian), Bernoulli, Poisson, etc.).</p>
 </div>
 <div id="posterior" class="section level3">
 <h3>Posterior</h3>
-<p>The posterior is t he updated distribution for the parameters after
+<p>The posterior is the updated distribution for the parameters after
 combining the prior and the data. Each row is one draw from the
 posterior — a plausible value of the parameters given the data and the
 prior.</p>
@@ -1945,7 +1945,7 @@ health scores tend to rise.</p>
 <span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co"># Note: Education</span></span>
 <span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="co"># Note: &quot;1 +&quot; explicitly adds the model intercept (this is automatically included)</span></span>
 <span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">brm</span>(health_score_revised <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> education, </span>
-<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>           <span class="co"># use the simulated data we created in &quot;SAE-Intro-R.Rmd&quot;</span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>           <span class="co"># use the simulated data we created in &quot;01-Intro-R.Rmd&quot;</span></span>
 <span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a>           <span class="at">data =</span> dta, </span>
 <span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>           <span class="co"># use the prior we specified above</span></span>
 <span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>           <span class="at">prior =</span> prior_example, </span>
