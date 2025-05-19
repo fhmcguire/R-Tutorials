@@ -1,0 +1,581 @@
+---
+title: "Training Module 1: Introduction to R Programming Language & Environment"
+author: "Hunter McGuire"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_depth: 4
+    code_folding: show
+    theme: spacelab
+    highlight: tango
+  pdf_document:
+    toc: yes
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Purpose
+
+The purpose of this file is to provide a brief introduction to the R statistical programming environment. R is an object-oriented, open-source programming language that can be used to manage, analyze, and visually display data.
+
+## R Syntax
+
+First, we will start with an overview of R syntax. **Note:** R is case-sensitive, so the value "A" is different from "a".
+
+Key operators:
+
+*   Assignment: `<-` (arrow sign) or `=` (equal sign)
+*   Arithmetic: `+` (plus), `-` (minus), `*` (multiply), `/` (divide), `^` (exponent)
+*   Logical: `==` (equal to), `!=` (not equal to), `>` (greater than), `>=` (greater than or equal to), `<` (less than), `<=` (less than or equal to), `&` (and), `|` (or)
+*   Comments: `#` (hashtag / pound sign; this does not get executed as code and is used to leave notes or explanations in your R script)
+
+Here are some examples of how to use these operators in code:
+
+```{r}
+# assign the value 5 to the object "a"
+a <- 5
+
+# subtract 2 from the object "a", and assign the value to "b"
+b <- a - 2
+
+# multiply the value of "b" by 4, and assign the value to "c"
+c <- b * 4
+
+# display the values of "a", "b", and "c"
+a
+b
+c
+```
+
+Using logical operators:
+
+```{r}
+# display whether the value of the objects "a" and "b" are equal
+a==b # [1] FALSE
+
+# display whether the value of "c" is greater than "a"
+c>a # [1] TRUE
+```
+
+## Data Types and Structures
+
+Now we will examine the data types and structures available in R.
+
+Data types:
+
+*   Numeric (all real numbers: whole numbers & decimal values)
+*   Integer (whole numbers only)
+*   Complex (imaginary numbers; ex: `9 + 4i`)
+*   Logical (`TRUE` or `FALSE`)
+*   Character (string text within quotation marks; ex: `"Hello world!"`)
+*   Factor (character strings stored as numbers)
+
+The most commonly used data structures in R:
+
+*   Vector: A one-dimensional collection of elements of the same data type (e.g., all numeric, all character).
+*   Matrix: A two-dimensional array with elements of the same data type, arranged in rows and columns.
+*   Data frame: A two-dimensional table where each column can contain different types (e.g., numeric, character, factor).
+*   List: A flexible container that can hold elements of different types and structures (e.g., vectors, data frames, matrices, or other lists).
+
+Let's examine the differences between these data types and structures:
+
+```{r}
+# Assign 5 character values to the vector named "char_vector"
+char_vector <- c("Apple", "Banana", "Banana", "Mango", "Mango")
+
+# Assign 5 numeric values to the vector named "num_vector"
+num_vector <- c(2, 1.1, 6.89, pi, 10) # note: `pi` is the value 3.141593...
+
+# Assign 5 integer values to the vector named "int_vector"
+int_vector <- c(1:5) # note: using the colon ":" between two numbers a sequence from the first to the second value, which produces the vector c(1, 2, 3, 4, 5)
+
+# Assign 5 logical values to the vector named "logic_vector"
+logic_vector <- c(TRUE, TRUE, FALSE, TRUE, FALSE)
+
+# Convert the character vector into factor format
+factor_vector <- as.factor(char_vector)
+```
+
+### Class Function
+
+We can check the class (or data type) of our vectors using the `class()` function. We will see an example below using the `paste0()` function, which pastes together values without spaces between them.
+
+```{r}
+# store our messages that we want to output
+message1 <- paste0("The vector `char_vector` is of the ", class(char_vector), " class.")
+message2 <- paste0("The vector `factor_vector` is of the ", class(factor_vector), " class.")
+                  
+# display the messages
+message1
+message2
+```
+
+### Matrix Function
+
+To create a matrix, we can use the `matrix()` function. Note: you can only store values of the same data type in a matrix (e.g., all numeric, all character).
+
+In this example, we will create two matrices with random values drawn from a uniform distribution using the `runif()` function. The default uniform distribution is between 0 and 1.
+
+```{r}
+# For reproducibility, we set the random seed value.
+# This can be any value of your choosing.
+set.seed(123) 
+
+# Create a matrix with 5 rows and 5 columns filled with random values
+random_matrix_1 <- 
+  matrix(runif(25), # since 5*5 = 25, we need 25 values to fill our matrix.
+         nrow = 5, # 5 rows
+         ncol = 5) # 5 columns
+
+# Create another matrix with 5 rows and 5 columns filled with random values
+random_matrix_2 <- 
+  matrix(runif(25), # since 5*5 = 25, we need 25 values to fill our matrix.
+         nrow = 5, # 5 rows
+         ncol = 5) # 5 columns
+
+# View the matrix
+random_matrix_1
+random_matrix_2
+```
+
+We can also add, subject, multiply, and divide matrices. For example, let's multiply the values from `random_matrix_1` by the values from `random_matrix_2`:
+
+```{r}
+# multiply the prior two matrices and store the result as a new matrix
+random_matrix_3 <- random_matrix_1 * random_matrix_2
+
+# View the new matrix
+random_matrix_3
+```
+
+### Data Frame Function
+
+We can create a data frame (which can store values with different data types) using the `data.frame` function. We will piece together the vectors we created earlier and store them as a data frame object called "my_data".
+
+```{r}
+# Create a data frame using the vectors we created
+my_data <- data.frame(
+  # Note: the lefthand side is the new variable (column) name
+  #       the righthand side is the vector you are loading into the data set
+  char = char_vector,
+  factor = factor_vector,
+  num = num_vector,
+  int = int_vector,
+  logic = logic_vector
+)
+
+# View the data frame
+my_data
+```
+
+We can also save a matrix in data.frame format. Let's use `random_matrix_3` defined above. To convert a matrix to a data.frame object, you can use either `as.data.frame()` or `data.frame()`.
+
+```{r}
+# convert random_matrix_3 to a data.frame object
+data_frame_matrix <- as.data.frame(random_matrix_3)
+
+# display the new data frame
+data_frame_matrix
+```
+
+You'll notice that the columns (variables) were given default names. We can go into the data frame and change these values like this:
+
+```{r}
+# Define the column names using a character vector with 5 values
+# Note: the number of values should match the number of columns (variables)
+colnames(data_frame_matrix) <-
+  c("Housing", "Transportation", "Education", "Healthcare", "Sanitation")
+
+# Now display the data frame with updated column names
+data_frame_matrix
+```
+
+## Basic data management and visualizations with the `tidyverse`
+
+The `tidyverse` is a collection of R packages designed primarily for data management tasks. It includes tools for data importing, wrangling, flexibly recoding variables, and more. The most commonly used packages are `dplyr` (for data manipulation) and `ggplot2` (for visualization).
+
+First, we will load the package (and install if necessary) the `tidyverse` package.
+
+```{r}
+# Install tidyverse (if not already installed)
+# install.packages("tidyverse")
+
+# Load tidyverse
+library(tidyverse)
+```
+
+As of the time this tutorial was generated, the following packages are included in the `tidyverse` core package suite:
+
+*   [`dplyr`](https://dplyr.tidyverse.org/): data manipulation tasks (filtering, selecting, mutating, sorting, joins, etc.)
+*   [`forcats`](https://forcats.tidyverse.org/): working with categorical variables (factors)
+*   [`ggplot2`](https://ggplot2.tidyverse.org/): data visualization tasks
+*   [`lubridate`](https://lubridate.tidyverse.org/): working with date-time data
+*   [`purrr`](https://purrr.tidyverse.org/): functional programming
+*   [`readr`](https://readr.tidyverse.org/): reading rectangular data from delimited files (.csv, .tsv, etc.)
+*   [`stringr`](https://stringr.tidyverse.org/): string (character) manipulation
+*   [`tibble`](https://tibble.tidyverse.org/): an enhanced way of working with data.frame objects
+*   [`tidyr`](https://tidyr.tidyverse.org/): for tidying data (reshaping, pivoting long/wide, etc.)
+
+Note above that you may receive messages that say `tidyverse_conflicts()` -- this indicates that some aspects of the `tidyverse` packages interfere with other packages. For instance, you likely received the message `dplyr::filter() masks stats::filter()`. This means that the `filter()` function from the `dplyr` package will be used instead of the `filter()` function from the base R `stats` package when both are loaded. If you want to explicitly use the version from a specific package, you can do so by prefixing it with the package name (e.g., `stats::filter(`) or `dplyr::filter()`).
+
+### Using `dplyr` for data manipulation
+
+In this tutorial, we are going to focus on the most common and useful package in the `tidyverse` for manipulating data: `dplyr`. The `dplyr` package provides a set of data manipulation functions:
+
+*   `select()`: choose columns (variables)
+*   `filter()`: choose rows (observations) based on condition(s)
+*   `mutate()`: create or transform columns (variables)
+*   `arrange()`: reorder/sort rows
+*   `summarize()`: reduce data to summary statistics (e.g., mean, SD, min, max, etc.)
+*   `group_by()`: define groups of rows based on one or more variables, often used before `summarize()`
+*   `rename()`: change the names of existing columns
+*   `%>%`: the "pipe" operator, which passes output from one function to the next
+
+Note: The "pipe" operator `%>%` can be easily produced by pressing ctrl+shift+M (on PC) or cmd+shift+M (on Mac).
+
+Let's use the `my_data` data frame we created earlier and test out some of these `dplyr` functions.
+
+```{r}
+# View just the numeric and logical columns
+my_data %>%
+  select(num, logic)
+
+# Filter rows where the num column is greater than 5
+my_data %>%
+  filter(num > 5)
+
+# Create a new column that is num multiplied by 10
+my_data %>%
+  mutate(num_10 = num * 10)
+
+# Arrange data by the num column in descending order
+my_data %>%
+  arrange(desc(num))
+```
+
+#### Grouped summaries with `group_by()` and `summarize()`
+
+These functions allow you to group your data and compute summaries by a grouping variable.
+
+```{r}
+# Group data by factor and calculate the summary statistics for the num column
+my_data %>%
+  group_by(factor) %>%
+  # create a new column named "mean_num" to store the mean of the "num" column
+  summarize(mean_num = mean(num, na.rm = TRUE),
+            # store the miniumum value for each factor
+            min_num = min(num, na.rm = TRUE),
+            # store the maximum value for each factor
+            max_num = max(num, na.rm = TRUE))
+```
+
+#### Rename columns with `rename()`
+
+The `rename()` function allows you to change the names of columns in your data frame. This is especially useful for making variable names more descriptive or consistent. The new name goes on the left-hand side, and the existing name goes on the right-hand side.
+
+```{r}
+# Rename the "char" column to "fruit"
+# Store the output as a new data.frame named "my_data_renamed"
+my_data_renamed <- my_data %>%
+  # Note: the lefthand side is the new variable name
+  #       the righthand side is the old variable name
+  rename(fruit = char) %>%
+  # keep only these variables in the new data frame
+  select(fruit, num, int, logic)
+```
+
+#### Joining data frames
+
+You can also join multiple data frames using `left_join()`, `right_join()`, `inner_join()`, and `full_join()`.
+
+First, let's create a second data frame named `price_data` which contains the fruit names and prices of each fruit.
+
+```{r}
+# Example: create a second data frame to join
+price_data <- data.frame(
+  fruit = c("Banana", "Mango", "Strawberry", "Grapes"),
+  price = c(0.5, 1.5, 2, 2.5)
+)
+```
+
+Now, let's join it with our `my_data_renamed` data frame. Note that the `price_data` has additional fruit values that are not included in the `my_data_renamed` data frame, so our choice of the type of join makes a difference.
+
+```{r}
+# Left join: Keeps all observations in "x" (the first data frame)
+data_left <- price_data %>%
+  left_join(my_data_renamed,
+            by = "fruit")
+
+# Note: you can also more explicitly call "x" and "y" through this method:
+data_left2 <-
+  left_join(x = price_data,
+            y = my_data_renamed,
+            by = "fruit")
+
+# The output for both will be the same regardless of the approach used.
+print(data_left)
+print(data_left2)
+```
+
+If we were to do a `right_join()`, now only the records that appear in the "right" data frame (our "y" data) are included in the output data frame. Since Strawberry and Grapes were not in the `my_data_removed` data frame, their price data is not included.
+
+Relatedly, the `price_data` did not contain values for "Apple", so there is no price data for Apple in our resulting data frame.
+
+```{r}
+data_right <-
+  right_join(x = price_data,
+             y = my_data_renamed,
+             by = "fruit")
+
+print(data_right)
+```
+The `inner_join()` returns only the fruits that are present in both data frames. In this case, only "Banana" and "Mango" are in both `price_data` and `my_data_renamed`, so only those rows are included.
+
+```{r}
+# Inner join: Keeps only rows that match in both data frames
+data_inner <-
+  inner_join(x = price_data,
+             y = my_data_renamed,
+             by = "fruit")
+
+print(data_inner)
+```
+
+The `full_join()` includes all rows from both data frames. If a fruit is only in one of the two data frames, the missing values will be filled with NA. This is useful when you want to retain all available information, regardless of matching rows.
+
+```{r}
+# Full join: Keeps all rows from both data frames
+data_full <-
+  full_join(x = price_data,
+            y = my_data_renamed,
+            by = "fruit")
+
+print(data_full)
+```
+
+### Creating basic data visualizations with `ggplot2`
+
+The `ggplot2` package, part of the `tidyverse`, is a powerful and flexible system for creating data visualizations using the Grammar of Graphics approach.
+
+First, let's build a new data frame object. This dataset includes variables such as income, education, age, and health score, and we can explore relationships such as how income and education relate to health outcomes.
+
+```{r}
+# for reproducibility, set a random seed starting point
+set.seed(123)  
+
+# set the number of observations
+n <- 500  
+
+new_data <- data.frame(
+  # create an age variable with "n" observations (defined above) from a 
+  # uniform distribution with a minimum age of 18 and maximum age of 80
+  age = round(runif(n = n, 
+                    min = 18, 
+                    max = 80),
+              # round age values to the nearest whole number
+              digits = 0),
+  # create an income variable with "n" observations from a normal distribution
+  # with a mean of 50,000 and a standard deviation of 15,000.
+  income = round(rnorm(n = n, 
+                       mean = 50000, 
+                       sd = 15000),
+                 # round income values to the nearest whole number
+                 digits = 0),
+  # sample education values for "n" observations from a defined probability
+  # distribution (see `prob =` statement).
+  education = sample(x = c("High School", 
+                           "Some College", 
+                           "Bachelor's", 
+                           "Graduate"), 
+                     size = n, 
+                     replace = TRUE, 
+                     prob = c(0.3, # High school
+                              0.3, # Some college
+                              0.25, # Bachelor's
+                              0.15)), # Graduate
+  # sample gender values for "n" observations from a defined probability
+  # distribution (see `prob =` statement).
+  gender = sample(x = c("Male", 
+                        "Female"), 
+                  size = n, 
+                  replace = TRUE, 
+                  prob = c(0.5, 
+                           0.5)),
+  # create a health score variable with "n" observations from a normal 
+  # distribution with mean = 70 and standard deviation = 10.
+  health_score = round(rnorm(n = n, 
+                             mean = 70, 
+                             sd = 10),
+                       # round income values to the nearest whole number
+                       digits = 0)
+)
+
+
+# Convert the education and gender variables to factor after the data frame is created
+new_data$education <- factor(new_data$education,
+                             # order education levels in order from lowest
+                             # to highest educational attainment
+                             levels = c("High School", 
+                                        "Some College", 
+                                        "Bachelor's", 
+                                        "Graduate"))
+new_data$gender <- factor(new_data$gender,
+                          levels = c("Male", 
+                                     "Female"))
+
+# Recalculate health_score to reflect influence of income and education level
+new_data$health_score_revised <- with(new_data,
+
+  # Start with the originally generated health score (mean 70, SD 10)
+  health_score +
+  
+  # Add a small positive contribution from income:
+  # For every additional $1,000 in income, health score increases by 0.2 points.
+  # For example, someone earning $70,000 would have an added 14 points (0.0002 * 70000)
+  0.0002 * income +
+  
+  # Add fixed "boosts" to health score based on education level:
+  # - Graduate degree adds 5 points
+  # - Bachelor's adds 3 points
+  # - Some College adds 1 point
+  # - High School (baseline) adds 0 points
+  ifelse(education == "Graduate", 5,
+         ifelse(education == "Bachelor's", 3,
+                ifelse(education == "Some College", 1, 0))) +
+  
+  # Add random noise from a normal distribution (mean = 0, SD = 2)
+  # to simulate unmeasured factors or variability in health not explained by
+  # income and education. This makes the data more realistic.
+  rnorm(n, mean = 0, sd = 2)
+)
+```
+
+#### Scatterplot
+
+Let's use our `my_data` data frame to create a simple scatter plot showing the relationship between annual income and health score. This scatter plot is 
+
+```{r}
+ggplot(new_data, aes(x = income, 
+                     y = health_score_revised, 
+                     color = education)) +
+  # set the size of the value points
+  geom_point(alpha = 0.7) +
+  # Add a linear regression line
+  # Note: Since we specified `color = education`, each education level will
+  #       have a separate regression line.
+  geom_smooth(method = "lm", 
+              # set `se = TRUE` to add confidence interval bands
+              se = FALSE) +
+  # Add labels to the plot
+  labs(
+    title = "Relationship Between Income and Health Score by Education Level",
+    x = "Annual Income (USD)",
+    y = "Health Score",
+    # legend label
+    color = "Education Level"
+  ) +
+  # a minimalistic theme with no background annotations
+  theme_minimal()
+```
+
+#### Boxplot
+
+This shows the distribution of health scores across education levels, including medians, interquartile ranges, and outliers.
+
+```{r}
+ggplot(new_data, aes(x = education, 
+                     y = health_score_revised, 
+                     fill = education)) +
+  # Create a boxplot
+  geom_boxplot() +
+  # Add labels to the plot
+  labs(title = "Boxplot of Health Score by Education Level",
+       x = "Education Level",
+       y = "Health Score") +
+  # a minimalistic theme with no background annotations
+  theme_minimal() +
+  # Remove the legend
+  # This information is duplicated by the x-axis labels
+  theme(legend.position = "none")
+```
+
+#### Histogram
+
+This visualizes how income is distributed across the simulated population.
+
+```{r}
+ggplot(new_data, aes(x = income)) +
+  # Create a histogram with a bin width of 5000
+  geom_histogram(binwidth = 5000, 
+                 # Set the fill color to a light blue color
+                 fill = "lightblue",
+                 # Add white spaces between each bin
+                 color = "white") +
+  # Add labels to the plot
+  labs(title = "Distribution of Income",
+       x = "Annual Income (USD)",
+       y = "Count") +
+  # a minimalistic theme with no background annotations
+  theme_minimal()
+```
+
+#### Density plot
+
+This shows the distribution of health scores by education level.
+
+```{r}
+ggplot(new_data, aes(x = health_score_revised, 
+                     fill = education)) +
+  # Set the opacity of the density plots
+  # 0.3 makes them more see-through
+  # higher values are more opaque
+  geom_density(alpha = 0.3) +
+  # Add labels
+  labs(title = "Density of Health Scores by Education Level",
+       x = "Health Score",
+       y = "Density",
+       # legend label
+       fill = "Education level") +
+  # a minimalistic theme with no background annotations
+  theme_minimal()
+```
+
+#### Facet scatterplot
+
+This adds nuance by allowing you to visually inspect whether the relationship between income and health score differs by gender. This places each scatterplot in a new section (or facet) of the output rather than combining the scatterplots and regression lines into a single image.
+
+```{r}
+ggplot(new_data, aes(x = income, 
+                     y = health_score_revised)) +
+  # edit the scatterplot points
+  geom_point(alpha = 0.4, # opacity 
+             color = "#1c9099") +
+  # add a linear regression line
+  geom_smooth(method = "lm", 
+              color = "darkred") +
+  # create separate scatterplots for each value of "gender"
+  facet_wrap(~ gender) +
+  # add labels to the plot
+  labs(title = "Health Score vs. Income by Gender",
+       x = "Income",
+       y = "Health Score") +
+  # a minimalistic theme with no background annotations
+  theme_minimal()
+```
+
+## Save the data
+
+Finally, let's save the data we created in the latter half of this tutorial, so that we can use it in future modules.
+
+In R, we use the `saveRDS()` function. We will save the `new_data` R object as the file `data_for_training_modules.rds`. This file is saved in the current working directory. To access the current working directory, you can use the function `getwd()`.
+
+```{r}
+# save the data file to the working directory
+saveRDS(new_data, file="data_for_training_modules.rds")
+```
+
